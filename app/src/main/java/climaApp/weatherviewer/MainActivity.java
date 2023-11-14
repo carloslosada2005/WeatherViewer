@@ -151,29 +151,34 @@ public class MainActivity extends AppCompatActivity {
 
     // create Weather objects from 35UNObject containing the forecast
     private void convertJSONtoArrayList(JSONObject forecast) {
-        weatherList.clear(); // clear old weather data
-    try {
-    // get forecast's "list" 150WArray
-        JSONArray list = forecast.getJSONArray("list");
-    //convert each element of list to a Weather object
-        for (int i=0; i<list.length(); ++i) {
-            JSONObject day = list.getJSONObject(i); // get one day's deta
-    // get the day's temperatures (temp") 350NObject
-            JSONObject temperatures = day.getJSONObject("temp");
-    // get day's "weather" JSONObject for the description and icon
-            JSONObject weather = day.getJSONArray ("weather").getJSONObject(0);
-    // add new Weather object to seatherlist
-            weatherList.add(new Weather(
-                    day.getLong("dt"), // date/time timestamp
-                    temperatures.getDouble ("min"), // einin temperature
-                    temperatures.getDouble("max"), // imperstare
-                    day.getDouble("humidity"), // percent humidity
-                    weather.getString("description"), // eather conditions
-                    weather.getString("icon"))); // con
-}
-    }
-    catch (JSONException e) {
-        e.printStackTrace();
-    }
+        weatherList.clear();    // clear old weather data
+
+        try {
+            // read the "list" of weather forecast - JSONArray
+            JSONArray list = forecast.getJSONArray("list");
+
+            // transform each list element into a Weather object
+            for (int i = 0; i < list.length(); ++i) {
+                JSONObject day = list.getJSONObject(i); // read data concerning one day
+
+                // read data concerning temperature in that day from JSONObject
+                JSONObject temperatures = day.getJSONObject("main");
+
+                // read description and weather icon from JSONObject
+                JSONObject weather = day.getJSONArray("weather").getJSONObject(0);
+
+                // add new Weather object to weatherList
+                weatherList.add(new Weather(
+                        day.getLong("dt"),  // timestamp
+                        temperatures.getDouble("temp_min"),  // minimal temperature
+                        temperatures.getDouble("temp_max"),  // maximal temperature
+                        temperatures.getDouble("humidity"),  // humidity
+                        weather.getString("description"), // weather conditions
+                        weather.getString("icon")));    // icon name
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

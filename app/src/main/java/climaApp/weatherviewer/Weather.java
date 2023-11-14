@@ -27,7 +27,7 @@ public class Weather {
                 NumberFormat.getPercentInstance().format(humidity / 100.0);
         this.description = description;
         this.iconURL =
-                "http://openweathermap.org/img/w/" + iconName + ".png";
+                "http://openweathermap.org/img/wn/" + iconName + ".png";
     }
 
     //convert timestamp to a day's name (e.g.. Monday. Tuesday.
