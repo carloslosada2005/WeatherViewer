@@ -26,9 +26,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private List<Weather> weatherList = new ArrayList<>();
-    // ArrayAdapter for binding Weather objects to a ListVies
     private WeatherArrayAdapter weatherArrayAdapter;
-    private ListView weatherListView; // displays weather info
+    private ListView weatherListView;
 
 
     @Override
@@ -70,19 +69,16 @@ public class MainActivity extends AppCompatActivity {
         });
 }
 
-    // programmatically dismiss keyboard when user touches FAB
     private void dismissKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-// create openweathermap.org web service URL using city
         private URL createURL(String city) {
             String apiKey = getString(R.string.api_key);
             String baseUrl = getString(R.string.web_service_url);
 
-            //http://api.openweathermap.org/data/2.5/forecast?id=524901& appid={API key}
             try {
 
                 String urlString = baseUrl + URLEncoder.encode(city, "UTF-8") +
@@ -95,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 return null; // URL was malformed
     }
 
-    // makes the REST web service call to get weather data and
-// saves the data to a local HTML file
     private class GetWeatherTask
             extends AsyncTask<URL, Void, JSONObject> {
         @Override
@@ -136,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     finally {
-                        connection.disconnect(); // close the HttpURLConnection
+                        connection.disconnect();
                     }
                         return null;
                     }
-                    // process 350N response and update ListView
+
                     @Override
                     protected void onPostExecute(JSONObject weather) {
                         convertJSONtoArrayList(weather); // repopulate weatherList
@@ -149,25 +143,18 @@ public class MainActivity extends AppCompatActivity {
                     }
     }
 
-    // create Weather objects from 35UNObject containing the forecast
     private void convertJSONtoArrayList(JSONObject forecast) {
-        weatherList.clear();    // clear old weather data
+        weatherList.clear();
 
         try {
-            // read the "list" of weather forecast - JSONArray
             JSONArray list = forecast.getJSONArray("list");
 
-            // transform each list element into a Weather object
             for (int i = 0; i < list.length(); ++i) {
-                JSONObject day = list.getJSONObject(i); // read data concerning one day
-
-                // read data concerning temperature in that day from JSONObject
+                JSONObject day = list.getJSONObject(i);
                 JSONObject temperatures = day.getJSONObject("main");
 
-                // read description and weather icon from JSONObject
                 JSONObject weather = day.getJSONArray("weather").getJSONObject(0);
 
-                // add new Weather object to weatherList
                 weatherList.add(new Weather(
                         day.getLong("dt"),  // timestamp
                         temperatures.getDouble("temp_min"),  // minimal temperature

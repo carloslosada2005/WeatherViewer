@@ -33,15 +33,11 @@ public class WeatherArrayAdapter extends ArrayAdapter<Weather>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-            // get Weather object for this specified ListView position
 
         Weather day = getItem(position);
 
-        ViewHolder viewHolder; // object that reference's list item's vines
-
-            // check for reusable ViewHolder from a ListView item that scrolled
-            // offscreen; otherwise, create a new Viewdlolder
-        if (convertView == null) { // no reusable Viewiolder, so create one
+        ViewHolder viewHolder;
+        if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView =
@@ -70,7 +66,7 @@ public class WeatherArrayAdapter extends ArrayAdapter<Weather>{
         //download and display seather conditioninge
             new LoadImageTask(viewHolder.conditionImageView).execute(day.iconURL);
         }
-        // get other data from Weather object and place into views
+        // get other data from Weather object and pla
         Context context = getContext(); //for loading String resources
         viewHolder.dayTextView.setText(context.getString( R.string.day_description, day.dayOfWeek, day.description));
                 viewHolder.lowTextView.setText( context.getString(R.string.low_temp, day.minTemp));
@@ -83,23 +79,18 @@ public class WeatherArrayAdapter extends ArrayAdapter<Weather>{
 
     // AsyncTask to load weather condition icons in a separate thread
     private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        private ImageView imageView; // displays the thumbnail
-
-        // store ImageView on which to set the downloaded Bitmap
+        private ImageView imageView;
         public LoadImageTask(ImageView imageView) {
 
             this.imageView = imageView;
         }
-        // Toad image: param(0) is the String URL representing the image
             @Override
             protected Bitmap doInBackground(String... params) {
             Bitmap bitmap = null;
             HttpURLConnection connection = null;
 
             try {
-                URL url = new URL(params[0]); // create URL for image
-
-            // apes an HeepURLConnection, get its InputStream and download the image
+                URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
 
             try (InputStream inputStream = connection.getInputStream()) {
